@@ -75,6 +75,7 @@ contract lottery {
 
         users[id].choice = choice;
         revealedUsers.push(id);
+        numRevealed++;
     }
 
     function checkWinner() public payable {
@@ -103,7 +104,7 @@ contract lottery {
         else {
             winnerAddr = payable(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
         }
- 
+
         temp = reward * 98 / 100;
 
         winnerAddr.transfer(temp);
@@ -114,7 +115,7 @@ contract lottery {
     }
 
     function withdraw() public payable {
-        require(block.timestamp - startTime - T1 - T2 - T3 >= 0, "Please wait");
+        require(block.timestamp - startTime - T1 - T2 - T3 < 0, "Please wait");
 
         for(uint i = 0; i < numUser; i++) {
             payable(users[i].addr).transfer(1e15 wei);
