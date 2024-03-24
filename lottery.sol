@@ -2,7 +2,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract lottery {
     struct User{
-        uint16 choice;
+        uint choice;
         bytes32 commit;
         address addr;
     }
@@ -34,8 +34,8 @@ contract lottery {
         for(uint i = 0; i < numUser; i++) {
             userNumber[users[i].addr] = N + 1;
             users[i].choice = 1000;
-            player[i].commit = bytes32(0);
-            player[i].addr = address(0);
+            users[i].commit = bytes32(0);
+            users[i].addr = address(0);
         }
 
         reward = 0;
@@ -82,29 +82,31 @@ contract lottery {
         require(owner == msg.sender);
 
         uint winner;
-        address winnerAddr;
+        address payable winnerAddr;
 
         if (numRevealed >= 1) {
-            winner = users[revealedUsers[0]];
+            winner = users[revealedUsers[0]].choice;
             for(uint i = 1; i < numRevealed; i++) {
-                winner ^= users[revealedUsers[i]];
+                winner ^= users[revealedUsers[i]].choice;
             }
 
             winner %= numUser;
             if (users[winner].choice > 999) {
-                winnerAddr = address(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
+                winnerAddr = payable(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
             }
             else {
-                winnerAddr = users[winner].addr;
+                winnerAddr = payable(users[winner].addr);
             }
         }
         else {
-            winnerAddr = address(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
+            winnerAddr = payable(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
         }
  
-        winnerAddr.transfer(reward * 0.98);
-        reward -= reward * 0.98;
-        owner.transfer(reward);
+        temp = reward * 98 / 100;
+
+        winnerAddr.transfer(temp);
+        reward -= temp;
+        payable(owner).transfer(reward);
 
         _reset();
     }
@@ -113,7 +115,7 @@ contract lottery {
         require(block.timestamp - startTime - T1 - T2 - T3 >= 0);
 
         for(uint i = 0; i < numUser; i++) {
-            player[i].addr.transfer(1e15 wei);
+            payable(users[i].addr).transfer(1e15 wei);
         }
 
         _reset();
