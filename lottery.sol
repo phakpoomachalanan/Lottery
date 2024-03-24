@@ -50,7 +50,7 @@ contract lottery {
 
     function revealChoice(uint choice, uint salt) public {
         uint id = userNumber[msg.sender];
-        require(block.timestamp - startTime <= T1 + T2);
+        require(block.timestamp - startTime - T1 <= T2);
         require(keccak256(abi.encodePacked(bytes32(choice), bytes32(salt))) == users[id].commit);
 
         users[id].choice = choice;
