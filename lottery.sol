@@ -69,8 +69,8 @@ contract lottery {
         uint id = userNumber[msg.sender];
         require(id != N + 1, "Registered player only");
         uint temp = block.timestamp - startTime - T1;
-        require(temp >= 0, "Too early");
-        require(temp <= T2, "Too late");
+        require(temp >= 0, "Too late");
+        require(temp <= T2, "Too early");
         require(keccak256(abi.encodePacked(bytes32(choice), bytes32(salt))) == users[id].commit, "Incorrect choice or salt");
 
         users[id].choice = choice;
@@ -79,8 +79,8 @@ contract lottery {
 
     function checkWinner() public payable {
         uint temp = block.timestamp - startTime - T1 - T2;
-        require(temp >= 0, "Too early");
-        require(temp <= T3, "Too late");
+        require(temp >= 0, "Too late");
+        require(temp <= T3, "Too early");
         require(owner == msg.sender, "Owner");
 
         uint winner;
