@@ -46,9 +46,9 @@ contract lottery {
     }
 
     function addUser(uint choice, uint salt) public payable {
-        require(msg.value == 1e15 wei);
-        require(numUser < N);
-        require(startTime == 0 || block.timestamp - startTime <= T1);
+        require(msg.value == 1e15 wei, "1 Finney");
+        require(numUser < N, "Full");
+        require(startTime == 0 || block.timestamp - startTime <= T1, "Too late");
 
         if (startTime == 0) {
             startTime = block.timestamp;
@@ -67,10 +67,11 @@ contract lottery {
 
     function revealChoice(uint choice, uint salt) public {
         uint id = userNumber[msg.sender];
-        require(id != N + 1);
+        require(id != N + 1, "Registered player only");
         uint temp = block.timestamp - startTime - T1;
-        require(temp >= 0 && temp <= T2);
-        require(keccak256(abi.encodePacked(bytes32(choice), bytes32(salt))) == users[id].commit);
+        require(temp >= 0, "Too early");
+        require(temp <= T2, "Too late");
+        require(keccak256(abi.encodePacked(bytes32(choice), bytes32(salt))) == users[id].commit, "Incorrect choice or salt");
 
         users[id].choice = choice;
         revealedUsers.push(id);
@@ -78,8 +79,9 @@ contract lottery {
 
     function checkWinner() public payable {
         uint temp = block.timestamp - startTime - T1 - T2;
-        require(temp >= 0 && temp <= T3);
-        require(owner == msg.sender);
+        require(temp >= 0, "Too early");
+        require(temp <= T3, "Too late");
+        require(owner == msg.sender, "Owner");
 
         uint winner;
         address payable winnerAddr;
@@ -112,7 +114,7 @@ contract lottery {
     }
 
     function withdraw() public payable {
-        require(block.timestamp - startTime - T1 - T2 - T3 >= 0);
+        require(block.timestamp - startTime - T1 - T2 - T3 >= 0, "Please wait");
 
         for(uint i = 0; i < numUser; i++) {
             payable(users[i].addr).transfer(1e15 wei);
