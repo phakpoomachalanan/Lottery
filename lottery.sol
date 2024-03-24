@@ -3,7 +3,7 @@ pragma solidity >=0.7.0 <0.9.0;
 contract lottery {
     struct User{
         uint16 choice;
-        byte32 commit;
+        bytes32 commit;
         address addr;
     }
 
