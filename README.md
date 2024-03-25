@@ -24,5 +24,5 @@ address ที่ deploy เกมลงไป (แก้ไข)
     - Owner ทำการหาผู้ชนะ
         ![Alt text](./picture/14.png?raw=true "Check")
     - โอนเงินให้ผู้ชนะ
-        ![Alt text](./picture/15.png?raw=true ""Winner")
+        ![Alt text](./picture/15.png?raw=true "Winner")
 2. 
