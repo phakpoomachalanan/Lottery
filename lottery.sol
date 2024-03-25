@@ -115,7 +115,7 @@ contract lottery {
     }
 
     function withdraw() public payable {
-        require(block.timestamp - startTime - T1 - T2 - T3 < 0, "Please wait");
+        require(block.timestamp > startTime + T1 + T2 + T3, "Please wait");
 
         for(uint i = 0; i < numUser; i++) {
             payable(users[i].addr).transfer(1e15 wei);
