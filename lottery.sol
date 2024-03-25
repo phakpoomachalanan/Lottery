@@ -95,14 +95,14 @@ contract lottery {
 
             winner %= numUser;
             if (users[winner].choice > 999) {
-                winnerAddr = payable(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
+                winnerAddr = payable(owner);
             }
             else {
                 winnerAddr = payable(users[winner].addr);
             }
         }
         else {
-            winnerAddr = payable(0xb3c2c183E51cA4025F3D3E814209779ba6E2821D);
+            winnerAddr = payable(owner);
         }
 
         temp = reward * 98 / 100;
