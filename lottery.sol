@@ -93,7 +93,7 @@ contract lottery {
                 winner ^= users[revealedUsers[i]].choice;
             }
 
-            winner %= numUser;
+            winner %= numRevealed;
             if (users[winner].choice > 999) {
                 winnerAddr = payable(owner);
             }
